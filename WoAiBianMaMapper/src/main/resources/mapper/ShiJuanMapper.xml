@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zbf.mapper.ShiJuanMapper">
+    <select id="getFenLei" resultType="map">
+        select * from lcg_shijuan_fenlei
+    </select>
+
+    <select id="getUserList" parameterType="page" resultType="map">
+        select * from lcg_user
+        <where>
+            <if test="params.userName !=null and params.userName !=''">
+                and userName like concat('%',#{params.userName},'%')
+            </if>
+            <if test="params.sex  !=null and params.sex !=''">
+                and sex ='${params.sex}'
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="createSj" parameterType="map">
+        insert into lcg_shijuan (id,fenleiid,zhuangtai,shijuanname,starttime,
+                                  endtime,opentime,shijian,havedaan,shijuanleixing,
+                                  shitishunxu,shuoming)
+        values ( #{id},#{fenleiid},#{zhuangtai},#{shijuanname},#{date1},
+                  #{date3},#{date4},#{shijian},#{havedaan},#{shijuanleixing},
+                  #{shitishunxu},#{shuoming}
+        )
+    </insert>
+
+    <!--添加 用户 试卷关联表-->
+    <insert id="insertsjUser" parameterType="com.zbf.entity.User">
+        insert into lcg_shijuan_user (id,shijuanid,userid) values (
+          #{linshiId},#{shijuanId},#{id}
+        )
+    </insert>
+</mapper>
